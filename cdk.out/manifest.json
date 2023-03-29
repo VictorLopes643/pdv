@@ -1,0 +1,130 @@
+{
+  "version": "31.0.0",
+  "artifacts": {
+    "goStack-.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "goStack-.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "goStack-": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "goStack-.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f3bccabacb21e37ddc43e785c406c821f6eff990b776120c8afa75996376e06f.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "goStack-.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "goStack-.assets"
+      ],
+      "metadata": {
+        "/goStack-/CheckoutDocker/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckoutDockerServiceRole942BB37E"
+          }
+        ],
+        "/goStack-/CheckoutDocker/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckoutDocker4A4EB428"
+          }
+        ],
+        "/goStack-/goApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "goApiAF5C0AF9"
+          }
+        ],
+        "/goStack-/goApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "goApiDeploymentF6C9C9252b01df21b478a5fce04e43f59ca1bc14"
+          }
+        ],
+        "/goStack-/goApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "goApiDeploymentStageprodF418A165"
+          }
+        ],
+        "/goStack-/goApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "goApiEndpoint23FE9BA8"
+          }
+        ],
+        "/goStack-/goApi/Default/checkout/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "goApicheckoutB3C5706C"
+          }
+        ],
+        "/goStack-/goApi/Default/checkout/POST/ApiPermission.goStackgoApi3C759C41.POST..checkout": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "goApicheckoutPOSTApiPermissiongoStackgoApi3C759C41POSTcheckout9BEFE934"
+          }
+        ],
+        "/goStack-/goApi/Default/checkout/POST/ApiPermission.Test.goStackgoApi3C759C41.POST..checkout": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "goApicheckoutPOSTApiPermissionTestgoStackgoApi3C759C41POSTcheckout3AAFFA4D"
+          }
+        ],
+        "/goStack-/goApi/Default/checkout/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "goApicheckoutPOSTEF64D609"
+          }
+        ],
+        "/goStack-/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/goStack-/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/goStack-/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/goStack-/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "goStack-"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

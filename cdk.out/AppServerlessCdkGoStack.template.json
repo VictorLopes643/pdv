@@ -1,0 +1,517 @@
+{
+ "Resources": {
+  "myGoHandlerServiceRole48BC89D3": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AppServerlessCdkGoStack/myGoHandler/ServiceRole/Resource"
+   }
+  },
+  "myGoHandler35B5D323": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "56d3344ea214579df26b8fab57f64b06b147083662ece8c6707f1e62616fbf48.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "myGoHandlerServiceRole48BC89D3",
+      "Arn"
+     ]
+    },
+    "Handler": "bootstrap",
+    "Runtime": "go1.x"
+   },
+   "DependsOn": [
+    "myGoHandlerServiceRole48BC89D3"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AppServerlessCdkGoStack/myGoHandler/Resource",
+    "aws:asset:path": "asset.56d3344ea214579df26b8fab57f64b06b147083662ece8c6707f1e62616fbf48",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "myGoApiCF92A24B": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "myGoApi"
+   },
+   "Metadata": {
+    "aws:cdk:path": "AppServerlessCdkGoStack/myGoApi/Resource"
+   }
+  },
+  "myGoApiDeployment7136DFC272f733de38971e63915b3831a6bf626b": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "myGoApiCF92A24B"
+    },
+    "Description": "Automatically created by the RestApi construct"
+   },
+   "DependsOn": [
+    "myGoApihelloworldGETF5D66B72",
+    "myGoApihelloworld1822873D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AppServerlessCdkGoStack/myGoApi/Deployment/Resource"
+   }
+  },
+  "myGoApiDeploymentStageprod9E0F76EA": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "myGoApiCF92A24B"
+    },
+    "DeploymentId": {
+     "Ref": "myGoApiDeployment7136DFC272f733de38971e63915b3831a6bf626b"
+    },
+    "StageName": "prod"
+   },
+   "Metadata": {
+    "aws:cdk:path": "AppServerlessCdkGoStack/myGoApi/DeploymentStage.prod/Resource"
+   }
+  },
+  "myGoApihelloworld1822873D": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "myGoApiCF92A24B",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "hello-world",
+    "RestApiId": {
+     "Ref": "myGoApiCF92A24B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AppServerlessCdkGoStack/myGoApi/Default/hello-world/Resource"
+   }
+  },
+  "myGoApihelloworldGETApiPermissionAppServerlessCdkGoStackmyGoApi544393C9GEThelloworldE06359B3": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "myGoHandler35B5D323",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "myGoApiCF92A24B"
+       },
+       "/",
+       {
+        "Ref": "myGoApiDeploymentStageprod9E0F76EA"
+       },
+       "/GET/hello-world"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AppServerlessCdkGoStack/myGoApi/Default/hello-world/GET/ApiPermission.AppServerlessCdkGoStackmyGoApi544393C9.GET..hello-world"
+   }
+  },
+  "myGoApihelloworldGETApiPermissionTestAppServerlessCdkGoStackmyGoApi544393C9GEThelloworldBD6DF91D": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "myGoHandler35B5D323",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "myGoApiCF92A24B"
+       },
+       "/test-invoke-stage/GET/hello-world"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AppServerlessCdkGoStack/myGoApi/Default/hello-world/GET/ApiPermission.Test.AppServerlessCdkGoStackmyGoApi544393C9.GET..hello-world"
+   }
+  },
+  "myGoApihelloworldGETF5D66B72": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "GET",
+    "ResourceId": {
+     "Ref": "myGoApihelloworld1822873D"
+    },
+    "RestApiId": {
+     "Ref": "myGoApiCF92A24B"
+    },
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "myGoHandler35B5D323",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AppServerlessCdkGoStack/myGoApi/Default/hello-world/GET/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1VQQU7DMBB8S++OEwKCK20RnBCoPKDaxku6TWxH2bWiKsrfsZNUwGlm1uPxrEv9VOix2MDAWWWarKWTHr8EqkbF0XEksHo8+BbV/tslnBTfH4EZhfU2QdR6F6oGZQeMqgV7MqDHaH8NrhLyLl39xN4Sc1STgo5qEBzgGqORZdvRnL7SF+xaf7XoJE3/qFirnnssJPp96Cucn72JNWjh7yhnb9JoYdP065u7pyBydXJ8BOmC/Lse+d47QzK3LjJouzPoYvO8flaecNk3q/16/OZva0+q9ne6LHSZD+SMHzgHax4fNhcmyvrghCzqw4I/NzbViIgBAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "AppServerlessCdkGoStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "myGoApiEndpoint21AE6129": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "myGoApiCF92A24B"
+      },
+      ".execute-api.",
+      {
+       "Ref": "AWS::Region"
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "myGoApiDeploymentStageprod9E0F76EA"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-2"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
