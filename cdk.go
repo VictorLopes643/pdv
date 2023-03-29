@@ -20,7 +20,7 @@ func NewAppServerlessCdkGoStack(scope constructs.Construct, id string, props *Ap
 	}
 	stack := awscdk.NewStack(scope, &id, &sprops)
 
-	// create Lambda function
+	// create Lambda functions
 	getHandler := awscdklambdagoalpha.NewGoFunction(stack, jsii.String("CheckoutDocker"), &awscdklambdagoalpha.GoFunctionProps{
 		Runtime: awslambda.Runtime_GO_1_X(),
 		Entry:   jsii.String("../Golang/cmd/checkout/main.go"),
