@@ -1,0 +1,12 @@
+type Categorias @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  Produtos: [Produtos] @hasMany(indexName: "byCategorias", fields: ["id"])
+}
+
+type Produtos @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  price: Float
+  categoriasID: ID! @index(name: "byCategorias")
+}
